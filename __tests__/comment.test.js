@@ -43,7 +43,7 @@ describe('gram routes', () => {
             .post('/api/auth/comments')
             .send(newComment)
             .then((res) => {
-                console.log('RES.body', res.body);
+                //console.log('RES.body', res.body);
                 expect(res.body).toEqual({
                     id: '1',
                     ...newComment
@@ -51,6 +51,21 @@ describe('gram routes', () => {
                 });
             });
     });
+
+    it('DELETEs a comment by id', async () => {
+        const newComment = {
+            commentBy: 'skunky',
+            gram: '1',
+            comment: 'ewwwwww'
+        };
+        await request(app)
+            .post('/api/auth/comments')
+            .send(newComment);
+        return request(app)
+            .delete('/api/auth/comments/1')
+            .then((res) => expect(res.body).toEqual({}));
+    });
+
     afterAll(() => {
         pool.end();
     });
