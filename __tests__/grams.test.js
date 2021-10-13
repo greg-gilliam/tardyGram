@@ -69,6 +69,14 @@ describe('gram routes', () => {
             });
     });
 
+    it('deletes a gram by id', async () => {
+        return request(app)
+            .delete('/api/grams/1')
+            .then((res) => {
+                expect(res.body).toEqual({});
+            });
+    });
+
     afterAll(() => {
         pool.end();
     });
