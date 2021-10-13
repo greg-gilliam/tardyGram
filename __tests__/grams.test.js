@@ -37,7 +37,7 @@ describe('gram routes', () => {
             .post('/api/auth/grams')
             .send(newGram)
             .then((res) => {
-                console.log('RES.body', res.body);
+                //console.log('RES.body', res.body);
                 expect(res.body).toEqual({
                     id: '1',
                     ...newGram

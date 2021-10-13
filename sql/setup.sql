@@ -12,7 +12,7 @@ CREATE TABLE grams (
   username TEXT NOT NULL,
   photo_url TEXT NOT NULL,
   caption TEXT NOT NULL,
-  tags TEXT
+  tags TEXT []
 );
 
 CREATE TABLE comments (
