@@ -43,19 +43,11 @@ describe('demo routes', () => {
         expect(res.redirect).toEqual(true);
     });
 
-    xit('tests get /login/callback and makes a new user if non existent', async () => {
+    it('tests get /login/callback with non-existent user', async () => {
         const res = await request(app).get('/api/auth/login/callback');
 
-        expect(res.body).toEqual();
-    });
-
-    xit('tests get /login/callback and updates the users avatar_url', async () => {
-        const pretending = await User.insert({
-            username: 'test_user',
-            photoUrl: 'https://example.com/image.png'
-        });
-        const res = await request(app).get(`/api/auth/${pretending.username}`);
-
-        expect(res.body).toEqual();
+        expect(res.cookie).toEqual();
     });
 });
+
+
