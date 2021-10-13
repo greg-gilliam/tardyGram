@@ -8,6 +8,8 @@ describe('tardyGram routes', () => {
     return setup(pool);
   });
 
+  it('tests something', async () => {});
+
   afterAll(() => {
     pool.end();
   });
