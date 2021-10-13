@@ -64,7 +64,7 @@ describe('gram routes', () => {
         return request(app)
             .delete('/api/auth/comments/1')
             .then((res) => {
-                console.log('RES.body', res.body);
+                //console.log('RES.body', res.body);
                 expect(res.body).toEqual({});
             });
     });

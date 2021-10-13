@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool.js');
 const setup = require('../data/setup.js');
 const request = require('supertest');
 const app = require('../lib/app.js');
+const User = require('../lib/models/User.js');
 
 jest.mock('../lib/middleware/ensureAuth.js', () => {
     return (req, res, next) => {
@@ -16,15 +17,6 @@ jest.mock('../lib/middleware/ensureAuth.js', () => {
     };
 });
 
-// function () {
-//   return function (req, res, next) {
-//     req.user = ...
-//   }
-// }
-
-// jest.mock('../lib/data/users.js', () => {
-//   return [{ user_id: 4 }, { user_id: 5 }, { user_id: 6 }];
-// });
 
 describe('demo routes', () => {
     beforeEach(() => {
@@ -35,8 +27,8 @@ describe('demo routes', () => {
         pool.end();
     });
 
-    it('returns a user object from GET /api/auth/me when logged in', async () => {
-        const res = await request(app).get('/api/auth/me');
+    it('returns a user object when logged in', async () => {
+        const res = await request(app).get('/api/auth/verify');
 
         expect(res.body).toEqual({
             username: 'test_user',
@@ -46,12 +38,24 @@ describe('demo routes', () => {
         });
     });
 
-    // it('requires a logged in user to GET /api/auth/me', async () => {
-    //   const res = await request(app).get('/api/auth/me');
+    it('confirms redirect to github with login', async () => {
+        const res = await request(app).get('/api/auth/login');
+        expect(res.redirect).toEqual(true);
+    });
 
-    //   expect(res.body).toEqual({
-    //     status: 401,
-    //     message: 'You must be signed in to continue.',
-    //   });
-    // });
+    xit('tests get /login/callback and makes a new user if non existent', async () => {
+        const res = await request(app).get('/api/auth/login/callback');
+
+        expect(res.body).toEqual();
+    });
+
+    xit('tests get /login/callback and updates the users avatar_url', async () => {
+        const pretending = await User.insert({
+            username: 'test_user',
+            photoUrl: 'https://example.com/image.png'
+        });
+        const res = await request(app).get(`/api/auth/${pretending.username}`);
+
+        expect(res.body).toEqual();
+    });
 });
