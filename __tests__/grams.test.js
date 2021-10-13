@@ -3,7 +3,7 @@ const setup = require('../data/setup.js');
 const request = require('supertest');
 const app = require('../lib/app.js');
 const User = require('../lib/models/User.js');
-const Grams = require('../lib/models/Gram.js');
+const Gram = require('../lib/models/Gram.js');
 
 jest.mock('../lib/middleware/ensureAuth.js', () => {
     return (req, res, next) => {
@@ -53,12 +53,13 @@ describe('gram routes', () => {
             caption: 'smell my tail',
             tags: ['smelly', 'skunk', 'alan'],
         };
-        await Grams.create(newGram);
+        await Gram.insert(newGram);
         return request(app)
-            .get('/api/auth/grams')
+            .get('/api/grams')
             .then((res) => {
                 expect(res.body).toEqual([
                     {
+                        id: '1',
                         username: 'skunky',
                         photoUrl: 'http://gram.greg/1.png',
                         caption: 'smell my tail',
