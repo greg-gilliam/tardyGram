@@ -63,7 +63,10 @@ describe('gram routes', () => {
             .send(newComment);
         return request(app)
             .delete('/api/auth/comments/1')
-            .then((res) => expect(res.body).toEqual({}));
+            .then((res) => {
+                console.log('RES.body', res.body);
+                expect(res.body).toEqual({});
+            });
     });
 
     afterAll(() => {
