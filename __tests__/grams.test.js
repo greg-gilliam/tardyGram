@@ -77,6 +77,24 @@ describe('gram routes', () => {
             });
     });
 
+    it('gets all grams by id', async () => {
+        const newGram = {
+            username: 'skunky',
+            photoUrl: 'http://gram.greg/1.png',
+            caption: 'smell my tail',
+            tags: ['smelly', 'skunk', 'alan'],
+            comment: 'laaadeeflippindaa',
+        };
+        return request(app)
+            .get('/api/grams/1')
+            .then((res) => {
+                expect(res.body).toEqual({
+                    id: '1',
+                    ...newGram,
+                });
+            });
+    });
+
     afterAll(() => {
         pool.end();
     });
