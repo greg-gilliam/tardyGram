@@ -22,3 +22,9 @@ CREATE TABLE comments (
   gram BIGINT NOT NULL REFERENCES grams(id),
   comment TEXT NOT NULL
 );
+
+INSERT INTO users (github_username, github_avatar_url)
+VALUES('gay', 'http://gayjeans.com/image.png'), ('queerdo', 'http://queercountry.com/image.png');
+
+-- INSERT INTO grams (username, photo_url, 
+-- )

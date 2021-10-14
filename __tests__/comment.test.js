@@ -40,7 +40,7 @@ describe('gram routes', () => {
             comment: 'ewwwwww'
         };
         return request(app) 
-            .post('/api/auth/comments')
+            .post('/api/comments')
             .send(newComment)
             .then((res) => {
                 //console.log('RES.body', res.body);
@@ -59,10 +59,10 @@ describe('gram routes', () => {
             comment: 'ewwwwww'
         };
         await request(app)
-            .post('/api/auth/comments')
+            .post('/api/comments')
             .send(newComment);
         return request(app)
-            .delete('/api/auth/comments/1')
+            .delete('/api/comments/1')
             .then((res) => {
                 //console.log('RES.body', res.body);
                 expect(res.body).toEqual({});
