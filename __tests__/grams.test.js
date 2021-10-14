@@ -25,6 +25,12 @@ describe('gram routes', () => {
             username: 'skunky',
             avatarUrl: 'http://alan.greg/1.png',
         });
+        return Gram.insert({
+            username: 'skunky',
+            photoUrl: 'http://gram.greg/1.png',
+            caption: 'smell my tail',
+            tags: ['smelly', 'skunk', 'alan'],
+        });
     });
 
     it('POSTs a new gram and returns it', () => {
@@ -85,14 +91,13 @@ describe('gram routes', () => {
             tags: ['smelly', 'skunk', 'alan'],
         };
         await request(app).post('/api/grams').send(newGram);
-        // add .post for comment
         return request(app)
             .get('/api/grams/1')
             .then((res) => {
                 expect(res.body).toEqual({
                     id: '1',
                     ...newGram,
-                    // comment: 'laaadeeeflippindaaa',
+                    comment: 'laaadeeeflippindaaa',
                 });
             });
 
