@@ -26,7 +26,7 @@ jest.mock('../lib/middleware/ensureAuth.js', () => {
 //   return [{ user_id: 4 }, { user_id: 5 }, { user_id: 6 }];
 // });
 
-describe('demo routes', () => {
+describe.skip('demo routes', () => {
     beforeEach(() => {
         return setup(pool);
     });
