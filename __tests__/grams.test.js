@@ -100,6 +100,7 @@ describe('gram routes', () => {
                     comment: 'laaadeeeflippindaaa',
                 });
             });
+        });
 
         it('updates the caption on a gram', async () => {
             const entry = await Gram.insert({

@@ -22,6 +22,3 @@ CREATE TABLE comments (
   gram BIGINT NOT NULL REFERENCES grams(id),
   comment TEXT NOT NULL
 );
-
--- INSERT INTO comments (comment_by, gram, comment)
--- VALUES ('skunky', 1, 'laaadeeeflippindaaa');
