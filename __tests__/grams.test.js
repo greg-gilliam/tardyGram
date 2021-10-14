@@ -3,6 +3,7 @@ const setup = require('../data/setup.js');
 const request = require('supertest');
 const app = require('../lib/app.js');
 const User = require('../lib/models/User.js');
+const Gram = require('../lib/models/Gram.js');
 
 jest.mock('../lib/middleware/ensureAuth.js', () => {
     return (req, res, next) => {
@@ -18,11 +19,11 @@ jest.mock('../lib/middleware/ensureAuth.js', () => {
 });
 
 describe('gram routes', () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
         await setup(pool);
         return User.insert({
-            username: 'skunky', 
-            avatarUrl: 'http://alan.greg/1.png'
+            username: 'skunky',
+            avatarUrl: 'http://alan.greg/1.png',
         });
     });
 
@@ -31,20 +32,71 @@ describe('gram routes', () => {
             username: 'skunky',
             photoUrl: 'http://gram.greg/1.png',
             caption: 'smell my tail',
-            tags: ['smelly', 'skunk', 'alan']
+            tags: ['smelly', 'skunk', 'alan'],
         };
-        return request(app) 
-            .post('/api/auth/grams')
+        return request(app)
+            .post('/api/grams')
             .send(newGram)
             .then((res) => {
                 //console.log('RES.body', res.body);
                 expect(res.body).toEqual({
                     id: '1',
-                    ...newGram
-                
+                    ...newGram,
                 });
             });
     });
+
+    it('returns all grams', async () => {
+        const newGram = {
+            username: 'skunky',
+            photoUrl: 'http://gram.greg/1.png',
+            caption: 'smell my tail',
+            tags: ['smelly', 'skunk', 'alan'],
+        };
+        await Gram.insert(newGram);
+        return request(app)
+            .get('/api/grams')
+            .then((res) => {
+                expect(res.body).toEqual([
+                    {
+                        id: '1',
+                        username: 'skunky',
+                        photoUrl: 'http://gram.greg/1.png',
+                        caption: 'smell my tail',
+                        tags: ['smelly', 'skunk', 'alan'],
+                    },
+                ]);
+            });
+    });
+
+    it('deletes a gram by id', async () => {
+        return request(app)
+            .delete('/api/grams/1')
+            .then((res) => {
+                expect(res.body).toEqual({});
+            });
+    });
+
+    it.only('gets a gram by id', async () => {
+        const newGram = {
+            username: 'skunky',
+            photoUrl: 'http://gram.greg/1.png',
+            caption: 'smell my tail',
+            tags: ['smelly', 'skunk', 'alan'],
+        };
+        await request(app).post('/api/grams').send(newGram);
+        // add .post for comment
+        return request(app)
+            .get('/api/grams/1')
+            .then((res) => {
+                expect(res.body).toEqual({
+                    id: '1',
+                    ...newGram,
+                    // comment: 'laaadeeeflippindaaa',
+                });
+            });
+    });
+
     afterAll(() => {
         pool.end();
     });
