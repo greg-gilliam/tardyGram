@@ -4,6 +4,7 @@ const request = require('supertest');
 const app = require('../lib/app.js');
 const User = require('../lib/models/User.js');
 const Gram = require('../lib/models/Gram.js');
+const Comment = require('../lib/models/Comment.js');
 
 jest.mock('../lib/middleware/ensureAuth.js', () => {
     return (req, res, next) => {
@@ -13,7 +14,6 @@ jest.mock('../lib/middleware/ensureAuth.js', () => {
             iat: Date.now(),
             exp: Date.now(),
         };
-
         next();
     };
 });
@@ -107,22 +107,72 @@ describe('gram routes', () => {
             username: 'skunky',
             photoUrl: 'http://gram.greg/1.png',
             caption: 'smell my tail',
-            tags: ['smelly', 'skunk', 'alan'],
+            tags: ['smelly', 'skunk', 'alan']
         });
         const updateEntry = {
             username: 'skunky',
             photoUrl: 'http://gram.greg/1.png',
             caption: 'DONT smell my tail',
-            tags: ['smelly', 'skunk', 'alan'],
+            tags: ['smelly', 'skunk', 'alan']
         };
-
+    
         return request(app)
-            .patch(`/api/auth/grams/${entry.id}`)
+            .patch(`/api/grams/${entry.id}`)
             .send(updateEntry)
             .then((res) => {
                 expect(res.body).toEqual({ id: '1', ...updateEntry });
             });
     });
+
+    it('gets the 10 most popular grams based on comments', async () => {
+        await Gram.insert({
+            username: 'gay',
+            photoUrl: 'http://jodee.messina/image.png',
+            caption: 'ive got a quarter',
+            tags: ['heads', 'greyhound', 'carolina']
+        });
+        await Gram.insert({
+            username: 'queerdo',
+            photoUrl: 'http://dolly.parton/image.png',
+            caption: 'highlight of my low life',
+            tags: ['jolene', 'low life']
+        });
+    
+        await Comment.insert({
+            gram: 1,
+            comment_by: 'queerdo',
+            comment: 'thats not a quarter'
+        });
+        await Comment.insert({
+            gram: 1,
+            comment_by: 'queerdo',
+            comment: 'ewwww'
+        });
+        await Comment.insert({
+            gram: 2,
+            comment_by: 'gay',
+            comment: 'dolly <3 jolene 4eva'
+        });
+    
+        const res = request(app).get('/api/grams/popular');
+        expect(res.body).toEqual([
+            {
+                id: '1',
+                username: 'gay',
+                photoUrl: 'http://jodee.messina/image.png',
+                caption: 'ive got a quarter',
+                tags: ['heads', 'greyhound', 'carolina']
+            },
+            {
+                id: '2',
+                username: 'queerdo',
+                photoUrl: 'http://dolly.parton/image.png',
+                caption: 'highlight of my low life',
+                tags: ['jolene', 'low life']
+            }
+        ]);
+    });
+    
 
     afterAll(() => {
         pool.end();
