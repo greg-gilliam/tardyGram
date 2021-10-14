@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool.js');
 const setup = require('../data/setup.js');
 const request = require('supertest');
 const app = require('../lib/app.js');
+const User = require('../lib/models/User.js');
 
 jest.mock('../lib/middleware/ensureAuth.js', () => {
     return (req, res, next) => {
@@ -16,15 +17,6 @@ jest.mock('../lib/middleware/ensureAuth.js', () => {
     };
 });
 
-// function () {
-//   return function (req, res, next) {
-//     req.user = ...
-//   }
-// }
-
-// jest.mock('../lib/data/users.js', () => {
-//   return [{ user_id: 4 }, { user_id: 5 }, { user_id: 6 }];
-// });
 
 describe.skip('demo routes', () => {
     beforeEach(() => {
@@ -35,8 +27,8 @@ describe.skip('demo routes', () => {
         pool.end();
     });
 
-    it('returns a user object from GET /api/auth/me when logged in', async () => {
-        const res = await request(app).get('/api/auth/me');
+    it('returns a user object when logged in', async () => {
+        const res = await request(app).get('/api/auth/verify');
 
         expect(res.body).toEqual({
             username: 'test_user',
@@ -46,12 +38,16 @@ describe.skip('demo routes', () => {
         });
     });
 
-    // it('requires a logged in user to GET /api/auth/me', async () => {
-    //   const res = await request(app).get('/api/auth/me');
+    it('confirms redirect to github with login', async () => {
+        const res = await request(app).get('/api/auth/login');
+        expect(res.redirect).toEqual(true);
+    });
 
-    //   expect(res.body).toEqual({
-    //     status: 401,
-    //     message: 'You must be signed in to continue.',
-    //   });
-    // });
+    it('tests get /login/callback with non-existent user', async () => {
+        const res = await request(app).get('/api/auth/login/callback');
+
+        expect(res.cookie).toEqual();
+    });
 });
+
+
