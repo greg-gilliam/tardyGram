@@ -17,8 +17,7 @@ jest.mock('../lib/middleware/ensureAuth.js', () => {
     };
 });
 
-
-describe.skip('demo routes', () => {
+describe('demo routes', () => {
     beforeEach(() => {
         return setup(pool);
     });
@@ -49,5 +48,3 @@ describe.skip('demo routes', () => {
         expect(res.cookie).toEqual();
     });
 });
-
-

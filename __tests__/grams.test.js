@@ -77,7 +77,7 @@ describe('gram routes', () => {
             });
     });
 
-    it.only('gets a gram by id', async () => {
+    it('gets a gram by id', async () => {
         const newGram = {
             username: 'skunky',
             photoUrl: 'http://gram.greg/1.png',
@@ -95,6 +95,28 @@ describe('gram routes', () => {
                     // comment: 'laaadeeeflippindaaa',
                 });
             });
+
+        it('updates the caption on a gram', async () => {
+            const entry = await Gram.insert({
+                username: 'skunky',
+                photoUrl: 'http://gram.greg/1.png',
+                caption: 'smell my tail',
+                tags: ['smelly', 'skunk', 'alan'],
+            });
+            const updateEntry = {
+                username: 'skunky',
+                photoUrl: 'http://gram.greg/1.png',
+                caption: 'DONT smell my tail',
+                tags: ['smelly', 'skunk', 'alan'],
+            };
+
+            return request(app)
+                .patch(`/api/auth/grams/${entry.id}`)
+                .send(updateEntry)
+                .then((res) => {
+                    expect(res.body).toEqual({ id: '1', ...updateEntry });
+                });
+        });
     });
 
     afterAll(() => {
