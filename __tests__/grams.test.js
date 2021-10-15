@@ -101,21 +101,21 @@ describe('gram routes', () => {
                 });
             });
     });
-        
+
     it('updates the caption on a gram', async () => {
         const entry = await Gram.insert({
             username: 'skunky',
             photoUrl: 'http://gram.greg/1.png',
             caption: 'smell my tail',
-            tags: ['smelly', 'skunk', 'alan']
+            tags: ['smelly', 'skunk', 'alan'],
         });
         const updateEntry = {
             username: 'skunky',
             photoUrl: 'http://gram.greg/1.png',
             caption: 'DONT smell my tail',
-            tags: ['smelly', 'skunk', 'alan']
+            tags: ['smelly', 'skunk', 'alan'],
         };
-    
+
         return request(app)
             .patch(`/api/grams/${entry.id}`)
             .send(updateEntry)
@@ -132,21 +132,19 @@ describe('gram routes', () => {
                 username: 'gay',
                 photoUrl: 'http://jodee.messina/image.png',
                 caption: 'ive got a quarter',
-                tags: ['heads', 'greyhound', 'carolina']
+                tags: ['heads', 'greyhound', 'carolina'],
             },
             {
                 id: '2',
                 username: 'queerdo',
                 photoUrl: 'http://dolly.parton/image.png',
                 caption: 'highlight of my low life',
-                tags: ['jolene', 'low life']
-            }
+                tags: ['jolene', 'low life'],
+            },
         ]);
     });
-    
 
     afterAll(() => {
         pool.end();
     });
 });
-
