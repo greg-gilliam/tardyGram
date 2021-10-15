@@ -46,32 +46,39 @@ describe('gram routes', () => {
             .then((res) => {
                 //console.log('RES.body', res.body);
                 expect(res.body).toEqual({
-                    id: '1',
+                    id: '4',
                     ...newGram,
                 });
             });
     });
 
     it('returns all grams', async () => {
-        const newGram = {
-            username: 'skunky',
-            photoUrl: 'http://gram.greg/1.png',
-            caption: 'smell my tail',
-            tags: ['smelly', 'skunk', 'alan'],
-        };
-        await Gram.insert(newGram);
         return request(app)
             .get('/api/grams')
             .then((res) => {
                 expect(res.body).toEqual([
                     {
                         id: '1',
+                        username: 'gay',
+                        photoUrl: 'http://jodee.messina/image.png',
+                        caption: 'ive got a quarter',
+                        tags: [ 'heads', 'greyhound', 'carolina' ]
+                    },
+                    {
+                        id: '2',
+                        username: 'queerdo',
+                        photoUrl: 'http://dolly.parton/image.png',
+                        caption: 'highlight of my low life',
+                        tags: [ 'jolene', 'low life' ]
+                    },
+                    {
+                        id: '3',
                         username: 'skunky',
                         photoUrl: 'http://gram.greg/1.png',
                         caption: 'smell my tail',
-                        tags: ['smelly', 'skunk', 'alan'],
-                    },
-                ]);
+                        tags: [ 'smelly', 'skunk', 'alan' ]
+                    }
+                    ]);
             });
     });
 
@@ -79,25 +86,26 @@ describe('gram routes', () => {
         return request(app)
             .delete('/api/grams/1')
             .then((res) => {
-                expect(res.body).toEqual({});
+                expect(res.body).toEqual({
+                    id: '1',
+                    username: 'gay',
+                    photo_url: 'http://jodee.messina/image.png',
+                    caption: 'ive got a quarter',
+                    tags: [ 'heads', 'greyhound', 'carolina' ]
+                });
             });
     });
 
-    it('gets a gram by id', async () => {
-        const newGram = {
-            username: 'skunky',
-            photoUrl: 'http://gram.greg/1.png',
-            caption: 'smell my tail',
-            tags: ['smelly', 'skunk', 'alan'],
-        };
-        await request(app).post('/api/grams').send(newGram);
+    it.only('gets a gram by id', async () => {
         return request(app)
             .get('/api/grams/1')
             .then((res) => {
                 expect(res.body).toEqual({
                     id: '1',
-                    ...newGram,
-                    comment: 'laaadeeeflippindaaa',
+                    username: 'gay',
+                    photoUrl: 'http://jodee.messina/image.png',
+                    caption: 'ive got a quarter',
+                    tags: [ 'heads', 'greyhound', 'carolina' ]
                 });
             });
     });
@@ -120,11 +128,11 @@ describe('gram routes', () => {
             .patch(`/api/grams/${entry.id}`)
             .send(updateEntry)
             .then((res) => {
-                expect(res.body).toEqual({ id: '2', ...updateEntry });
+                expect(res.body).toEqual({ id: '4', ...updateEntry });
             });
     });
 
-    it('gets the 10 most popular grams based on comments', async () => {
+    xit('gets the 10 most popular grams based on comments', async () => {
         const res = request(app).get('/api/grams/popular');
         expect(res.body).toEqual([
             {
