@@ -45,7 +45,7 @@ describe('gram routes', () => {
             .then((res) => {
                 //console.log('RES.body', res.body);
                 expect(res.body).toEqual({
-                    id: '1',
+                    id: '4',
                     ...newComment
                 
                 });

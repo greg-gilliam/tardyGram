@@ -26,5 +26,8 @@ CREATE TABLE comments (
 INSERT INTO users (github_username, github_avatar_url)
 VALUES('gay', 'http://gayjeans.com/image.png'), ('queerdo', 'http://queercountry.com/image.png');
 
--- INSERT INTO grams (username, photo_url, 
--- )
+INSERT INTO grams (username, photo_url, caption, tags)
+VALUES ('gay', 'http://jodee.messina/image.png', 'ive got a quarter', '{heads, greyhound, carolina}'), ('queerdo', 'http://dolly.parton/image.png', 'highlight of my low life', '{jolene, low life}');
+
+INSERT INTO comments (comment_by, gram, comment)
+VALUES ('queerdo', 1, 'thats not a quarter'), ('queerdo', 1, 'ewwwww'), ('gay', 2, 'dolly <3 jolene 4eva');
