@@ -5,7 +5,6 @@ const app = require('../lib/app.js');
 const User = require('../lib/models/User.js');
 const Gram = require('../lib/models/Gram.js');
 
-
 jest.mock('../lib/middleware/ensureAuth.js', () => {
     return (req, res, next) => {
         req.user = {
@@ -44,7 +43,6 @@ describe('gram routes', () => {
             .post('/api/grams')
             .send(newGram)
             .then((res) => {
-                //console.log('RES.body', res.body);
                 expect(res.body).toEqual({
                     id: '4',
                     ...newGram,
@@ -62,23 +60,23 @@ describe('gram routes', () => {
                         username: 'gay',
                         photoUrl: 'http://jodee.messina/image.png',
                         caption: 'ive got a quarter',
-                        tags: [ 'heads', 'greyhound', 'carolina' ]
+                        tags: ['heads', 'greyhound', 'carolina'],
                     },
                     {
                         id: '2',
                         username: 'queerdo',
                         photoUrl: 'http://dolly.parton/image.png',
                         caption: 'highlight of my low life',
-                        tags: [ 'jolene', 'low life' ]
+                        tags: ['jolene', 'low life'],
                     },
                     {
                         id: '3',
                         username: 'skunky',
                         photoUrl: 'http://gram.greg/1.png',
                         caption: 'smell my tail',
-                        tags: [ 'smelly', 'skunk', 'alan' ]
-                    }
-                    ]);
+                        tags: ['smelly', 'skunk', 'alan'],
+                    },
+                ]);
             });
     });
 
@@ -91,12 +89,12 @@ describe('gram routes', () => {
                     username: 'gay',
                     photo_url: 'http://jodee.messina/image.png',
                     caption: 'ive got a quarter',
-                    tags: [ 'heads', 'greyhound', 'carolina' ]
+                    tags: ['heads', 'greyhound', 'carolina'],
                 });
             });
     });
 
-    it.only('gets a gram by id', async () => {
+    it('gets a gram by id', async () => {
         return request(app)
             .get('/api/grams/1')
             .then((res) => {
@@ -105,7 +103,7 @@ describe('gram routes', () => {
                     username: 'gay',
                     photoUrl: 'http://jodee.messina/image.png',
                     caption: 'ive got a quarter',
-                    tags: [ 'heads', 'greyhound', 'carolina' ]
+                    tags: ['heads', 'greyhound', 'carolina'],
                 });
             });
     });
@@ -132,7 +130,7 @@ describe('gram routes', () => {
             });
     });
 
-    xit('gets the 10 most popular grams based on comments', async () => {
+    it.skip('gets the 10 most popular grams based on comments', async () => {
         const res = request(app).get('/api/grams/popular');
         expect(res.body).toEqual([
             {

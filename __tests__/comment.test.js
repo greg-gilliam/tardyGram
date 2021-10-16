@@ -19,17 +19,17 @@ jest.mock('../lib/middleware/ensureAuth.js', () => {
 });
 
 describe('gram routes', () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
         await setup(pool);
         await User.insert({
-            username: 'skunky', 
-            avatarUrl: 'http://alan.greg/1.png'
+            username: 'skunky',
+            avatarUrl: 'http://alan.greg/1.png',
         });
         return Gram.insert({
             username: 'skunky',
             photoUrl: 'http://gram.greg/1.png',
             caption: 'smell my tail',
-            tags: ['smelly', 'skunk', 'alan']
+            tags: ['smelly', 'skunk', 'alan'],
         });
     });
 
@@ -37,17 +37,15 @@ describe('gram routes', () => {
         const newComment = {
             commentBy: 'skunky',
             gram: '1',
-            comment: 'ewwwwww'
+            comment: 'ewwwwww',
         };
-        return request(app) 
+        return request(app)
             .post('/api/comments')
             .send(newComment)
             .then((res) => {
-                //console.log('RES.body', res.body);
                 expect(res.body).toEqual({
                     id: '4',
-                    ...newComment
-                
+                    ...newComment,
                 });
             });
     });
@@ -56,15 +54,12 @@ describe('gram routes', () => {
         const newComment = {
             commentBy: 'skunky',
             gram: '1',
-            comment: 'ewwwwww'
+            comment: 'ewwwwww',
         };
-        await request(app)
-            .post('/api/comments')
-            .send(newComment);
+        await request(app).post('/api/comments').send(newComment);
         return request(app)
             .delete('/api/comments/1')
             .then((res) => {
-                //console.log('RES.body', res.body);
                 expect(res.body).toEqual({});
             });
     });
