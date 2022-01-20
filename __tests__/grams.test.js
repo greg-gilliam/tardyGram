@@ -130,7 +130,7 @@ describe('gram routes', () => {
             });
     });
 
-    it.skip('gets the 10 most popular grams based on comments', async () => {
+    it('gets the 10 most popular grams based on comments', async () => {
         const res = request(app).get('/api/grams/popular');
         expect(res.body).toEqual([
             {
